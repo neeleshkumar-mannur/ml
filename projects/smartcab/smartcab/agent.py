@@ -39,7 +39,12 @@ class LearningAgent(Agent):
         # Update epsilon using a decay function of your choice
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
-
+        if testing:
+            self.epsilon = 0
+            self.alpha = 0
+        else:
+            #self.epsilon = self.epsilon * 0.88
+            self.epsilon = self.epsilon - 0.05
         return None
 
     def build_state(self):
@@ -95,8 +100,8 @@ class LearningAgent(Agent):
         # Set the agent state and default 
         self.state = state
         self.next_waypoint = self.planner.next_waypoint()
-        action = random.choice(self.valid_actions)
-
+        #action = random.choice(self.valid_actions)
+        action = None
         ########### 
         ## TO DO ##
         ###########
@@ -153,7 +158,8 @@ def run():
     #   learning   - set to True to force the driving agent to use Q-learning
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
-    agent = env.create_agent(LearningAgent)
+    kwargs = {'learning' : True, 'alpha': 0.5}
+    agent = env.create_agent(LearningAgent, **kwargs)
     
     ##############
     # Follow the driving agent
