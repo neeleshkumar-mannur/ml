@@ -44,6 +44,7 @@ class LearningAgent(Agent):
             self.alpha = 0
         else:
             # Using e = e^(-self.alpha * trial_number) formula for decay function
+            #self.epsilon = self.epsilon - 0.05
             self.epsilon = math.exp(-self.alpha * self.trial)
             self.trial += 1
 
@@ -93,8 +94,10 @@ class LearningAgent(Agent):
         # When learning, check if the 'state' is not in the Q-table
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
-        if state not in self.Q:
-            self.Q[state] = {None:0, 'left' : 0, 'right':0, 'forward' : 0}		
+        #if self.learning and state not in self.Q:
+        if self.learning:
+            if state not in self.Q:
+                self.Q[state] = {None:0, 'left' : 0, 'right':0, 'forward' : 0}		
         return
 
 
@@ -171,6 +174,8 @@ def run():
     #   learning   - set to True to force the driving agent to use Q-learning
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
+    # Incorporated review comments for Alpha to 0.5
+    #kwargs = {'learning' : True, 'alpha': 0.5}
     kwargs = {'learning' : True, 'alpha': 0.002}
     agent = env.create_agent(LearningAgent, **kwargs)
     
